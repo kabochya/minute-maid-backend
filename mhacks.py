@@ -4,11 +4,13 @@ import os
 from config import app_config
 import json
 
+# Using ENV to specify the configuration file
+# dev: development mode
+# prod: production mode
+
 app = Flask(__name__)
 config_name = os.getenv('ENV')
 app.config.from_object(app_config[config_name])
-print(app.config)
-
 
 @app.route("/")
 def hello():
