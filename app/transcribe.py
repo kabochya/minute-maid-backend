@@ -61,7 +61,9 @@ def get_sentences(data, save = False):
     """
     if os.path.exists("data/demo.dat"):
         with open("data/demo.dat", "rb") as f:
-            audio_text = pickle.load(f)
+            ret = pickle.load(f)
+            print("Preload")
+            return ret
     else:
         audio_text = transcribe_audio_watson(data, False)
     if audio_text:
