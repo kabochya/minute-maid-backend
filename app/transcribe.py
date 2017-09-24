@@ -14,7 +14,7 @@ def transcribe_audio_watson(string, is_file):
     else:
         data = string
     return stt.recognize(
-            audio_file, content_type='audio/wav',
+            data, content_type='audio/wav',
             timestamps = True
             )
 
