@@ -1,8 +1,10 @@
 import numpy as np
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.stop_words import ENGLISH_STOP_WORDS as stop_words
 from sklearn.preprocessing import Normalizer
+from gensim import matutils
 from gensim.models.lsimodel import LsiModel
 import sys
 
