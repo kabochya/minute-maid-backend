@@ -67,7 +67,7 @@ def get_sentences(data, save = False):
     if audio_text:
         ret = parse_watson_result(audio_text)
         if save:
-            with(open("data/demo.txt"), "w") as f:
+            with open("data/demo.txt", "w") as f:
                 f.write(ret)
         return ret
     else:
