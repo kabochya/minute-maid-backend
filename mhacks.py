@@ -43,7 +43,7 @@ def process_audio_file():
                 sentences = get_sentences(data, save=True)
                 save_sentences_to_mongo(file_id, sentences)
                 for s in sentences:
-                    s.remove("_id")
+                    del s["_id"]
             full_text = get_text(sentences)
             # cluster and summarize
             clusters = cluster(sentences)
