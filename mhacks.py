@@ -1,4 +1,5 @@
 from flask import Flask
+from flask import jsonify
 from flask_pymongo import PyMongo
 from flask import request
 import os
@@ -42,7 +43,7 @@ def process_audio_file():
             #save_sentences_to_mongo(sentences)
             # return result back
             #summarize_sentences = summarize(full_text, 3)
-            return json.dump(sentences)
+            return jsonify(sentences)
 
 
 def download_from_GCP(file_name):
