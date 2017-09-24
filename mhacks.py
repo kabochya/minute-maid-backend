@@ -41,21 +41,18 @@ def process_audio_file():
             sentences = list(mongo_find_sentences(file_id))
             if not sentences:
                 sentences = get_sentences(data, save=True)
-                save_to_mongo = True
-            full_text = get_text(sentences)
-            clusters = cluster(sentences)
-            # cluster and summarize
-            # save result in db
-            if save_to_mongo:
                 save_sentences_to_mongo(file_id, sentences)
-            # return result back
-            summarize_sentences = summarize(full_text, 3)
+                for s in sentences:
+                    s.remove("_id")
+            full_text = get_text(sentences)
+            # cluster and summarize
+            clusters = cluster(sentences)
+            summarize_sentences = summarize(full_text, 2)
             response = {
                 "sentences": sentences,
                 "clusters": clusters,
                 "summary": [str(s) for s in summarize_sentences]
             }
-            print(response["sentences"])
             return jsonify(response)
 
 
