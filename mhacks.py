@@ -28,20 +28,24 @@ def hello():
 @app.route("/file-ready", methods=['POST'])
 def process_audio_file():
     if request.method == "POST":
+        print("get request")
         data = request.data
         data_json = json.loads(data)
         file_id = data_json.get("file_id")
         if file_id:
             # download from gcp
+            print("Downloading data")
             data = download_from_GCP(file_id)
             # analysing audio file
+            print("Converting to text")
             sentences = get_sentences(data)
             full_text = get_text(sentences)
+            print(full_text)
             # cluster and summarize
             # save result in db
-            save_sentences_to_mongo(sentences)
+            #save_sentences_to_mongo(sentences)
             # return result back
-            summarize_sentences = summarize(full_text, 3)
+            #summarize_sentences = summarize(full_text, 3)
             return json.dump(sentences)
 
 
