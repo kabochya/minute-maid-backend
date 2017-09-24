@@ -60,8 +60,10 @@ def get_sentences(data):
         :rtype ret: list, a list of sentences
     """
     audio_text = transcribe_audio_watson(data, False)
-    if not audio_text:
+    if audio_text:
         return parse_watson_result(audio_text)
+    else:
+        print("No result from Watson")
 
 
 def export_watson_result(result, file_name):
