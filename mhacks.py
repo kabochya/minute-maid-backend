@@ -21,11 +21,6 @@ app.config.from_object(app_config[config_name])
 # Get mongo db
 mongo = PyMongo(app)
 
-# Setup storage
-storage = Storage()
-storage.init_app(app)
-
-
 @app.route("/")
 def hello():
     return "Hello World!"
