@@ -23,7 +23,7 @@ mongo = PyMongo(app)
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    return "Hello MHacks!"
 
 @app.route("/file-ready", methods=['POST'])
 def process_audio_file():
@@ -31,20 +31,24 @@ def process_audio_file():
         data = request.data
         data_json = json.loads(data)
         file_id = data_json.get("file_id")
+        save_to_mongo = False
         if file_id:
             # download from gcp
             print("Downloading data")
             data = download_from_GCP(file_id)
             # analysing audio file
             print("Converting to text")
-            sentences = get_sentences(data, save=True)
+            sentences = list(mongo_find_sentences(file_id))
+            if not sentences:
+                sentences = get_sentences(data)
+                save_sentences_to_mongo(file_id, sentences)
+                for s in sentences:
+                    del s["_id"]
             full_text = get_text(sentences)
             clusters = cluster(sentences)
             # cluster and summarize
-            # save result in db
-            # save_sentences_to_mongo(file_id, sentences)
-            # return result back
-            summarize_sentences = summarize(full_text, 3)
+            clusters = cluster(sentences)
+            summarize_sentences = summarize(full_text, 2)
             response = {
                 "sentences": sentences,
                 "clusters": clusters,
@@ -63,8 +67,12 @@ def download_from_GCP(file_name):
         print("File %s not found" % file_name)
 
 def save_sentences_to_mongo(file_name, input_sentences):
-     sentences = mongo.db.sentences
-     sentences.delete_many({"file_name": file_name})
+     collection = mongo.db.sentences
+     collection.delete_many({"file_name": file_name})
      for s in input_sentences:
         s["file_name"] = file_name
-     sentences.insert_many(input_sentences)
+     collection.insert_many(input_sentences)
+
+def mongo_find_sentences(file_name):
+    collection = mongo.db.sentences
+    return collection.find({"file_name": file_name}, {"_id":0})
