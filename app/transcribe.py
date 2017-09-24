@@ -54,14 +54,22 @@ def get_text(sentence_list):
     ret = ". ".join([s["text"].capitalize() for s in sentence_list])
     return ret + "."
 
-def get_sentences(data):
+def get_sentences(data, save = False):
     """
         :params data: string, can be bytes or file_name for the audio
         :rtype ret: list, a list of sentences
     """
-    audio_text = transcribe_audio_watson(data, False)
+    if os.path.exists("data/demo.txt"):
+        with open("data/demo.txt", "r") as f:
+            audio_text = f.read()
+    else:
+        audio_text = transcribe_audio_watson(data, False)
     if audio_text:
-        return parse_watson_result(audio_text)
+        ret = parse_watson_result(audio_text)
+        if save:
+            with(open("data/demo.txt"), "w") as f:
+                f.write(ret)
+        return ret
     else:
         print("No result from Watson")
 
