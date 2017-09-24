@@ -46,5 +46,5 @@ def cluster(sentences):
             del clusters[i]
 
     last_cluster = [valid_indices[clusters[i][np.where(np.sum(np.square(valid_sent[clusters[
-                                                i]] - cluster.cluster_centers_[i]), axis=1) < cluster.inertia_ / len(corpus))]] for i in clusters]
+                                                i]] - cluster.cluster_centers_[i]), axis=1) < cluster.inertia_ / len(corpus))]].tolist() for i in clusters]
     return last_cluster
