@@ -37,7 +37,7 @@ def process_audio_file():
             data = download_from_GCP(file_id)
             # analysing audio file
             print("Converting to text")
-            sentences = get_sentences(data)
+            sentences = get_sentences(data, save=True)
             full_text = get_text(sentences)
             clusters = cluster(sentences)
             # cluster and summarize
