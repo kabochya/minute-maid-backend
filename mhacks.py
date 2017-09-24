@@ -5,7 +5,6 @@ from flask import Flask
 from flask import request
 import os
 from config import app_config
-from flask_cloudy import Storage
 from app.transcribe import *
 from app.summarizer import *
 import json
