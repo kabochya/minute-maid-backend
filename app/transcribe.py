@@ -5,10 +5,10 @@ import os
 stt = SpeechToTextV1(username="56076909-791e-498c-84b9-b56ee1b47932",
                      password="5BKPF3HxSvVq")
 
-def transcribe_audio_watson(string):
+def transcribe_audio_watson(string, is_file):
     if not string:
         return
-    if os.path.isfile(string):
+    if is_file:
         with open(string, "rb") as f:
             data = f.read()
     else:
@@ -59,7 +59,7 @@ def get_sentences(data):
         :params data: string, can be bytes or file_name for the audio
         :rtype ret: list, a list of sentences
     """
-    audio_text = transcribe_audio_watson(data)
+    audio_text = transcribe_audio_watson(data, False)
     if not audio_text:
         return parse_watson_result(audio_text)
 
@@ -74,7 +74,7 @@ def export_transcript(result, file_name):
         f.write(get_text(parsed_result))
 
 if __name__=="__main__":
-    result = transcribe_audio_watson("../plan2.wav")
+    result = transcribe_audio_watson("../plan2.wav", True)
     export_watson_result(result, "data/plan2_result.txt")
     export_transcript(result, "data/test4.txt")
 
