@@ -59,16 +59,16 @@ def get_sentences(data, save = False):
         :params data: string, can be bytes or file_name for the audio
         :rtype ret: list, a list of sentences
     """
-    if os.path.exists("data/demo.txt"):
-        with open("data/demo.txt", "r") as f:
-            audio_text = f.read()
+    if os.path.exists("data/demo.dat"):
+        with open("data/demo.dat", "rb") as f:
+            audio_text = pickle.load(f)
     else:
         audio_text = transcribe_audio_watson(data, False)
     if audio_text:
         ret = parse_watson_result(audio_text)
         if save:
-            with open("data/demo.txt", "w") as f:
-                f.write(ret)
+            with open("data/demo.dat", "wb") as f:
+                pickle.dump(ret, f)
         return ret
     else:
         print("No result from Watson")
