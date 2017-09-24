@@ -42,7 +42,7 @@ def process_audio_file():
             clusters = cluster(sentences)
             # cluster and summarize
             # save result in db
-            save_sentences_to_mongo(file_id, sentences)
+            # save_sentences_to_mongo(file_id, sentences)
             # return result back
             summarize_sentences = summarize(full_text, 3)
             response = {
