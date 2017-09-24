@@ -64,8 +64,8 @@ def download_from_GCP(file_name):
         print("File %s not found" % file_name)
 
 def save_sentences_to_mongo(file_name, input_sentences):
-     sentences = mongo.db.sentences
-     sentences.delete_many({"file_name": file_name})
+     s = mongo.db.sentences
+     s.delete_many({"file_name": file_name})
      for s in input_sentences:
         s["file_name"] = file_name
-     sentences.insert_many(input_sentences)
+     s.insert_many(input_sentences)
