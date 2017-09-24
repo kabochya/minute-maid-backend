@@ -1,18 +1,16 @@
-from __future__ import print_function
-
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.stop_words import ENGLISH_STOP_WORDS as stop_words
 from sklearn.preprocessing import Normalizer
-from gensim.models.lsimodel import *
+from gensim.models.lsimodel import LsiModel
 import sys
 
 def cluster(sentences):
 
     my_stop_words = {'okay', 'don', 've', 'didn', 'know', 'think', 'really'}
 
-    corpus = [c.replace("%hesitation", "") for c in sentences]
+    corpus = [c.text.replace("%hesitation", "") for c in sentences]
 
     corpus = np.array(corpus)
     tf_vectorizer = TfidfVectorizer(decode_error='ignore', max_df=0.7,
