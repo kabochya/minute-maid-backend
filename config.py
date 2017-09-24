@@ -5,6 +5,8 @@ class Config(object):
     DEBUG = False
     BUCKET_ID = "xxnet-172504.appspot.com"
     PROJECT_ID = "xxnet-172504"
+    MONGO_DBNAME = 'mhacks'
+    MONGO_URI = 'mongodb://localhost:27017/mhacks'
 
 class DevelopmentConfig(Config):
     """Configuration for development"""

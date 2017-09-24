@@ -6,6 +6,8 @@ stt = SpeechToTextV1(username="56076909-791e-498c-84b9-b56ee1b47932",
                      password="5BKPF3HxSvVq")
 
 def transcribe_audio_watson(string):
+    if not string:
+        return
     if os.path.isfile(string):
         with open(string, "rb") as f:
             data = f.read()

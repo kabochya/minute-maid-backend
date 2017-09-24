@@ -4,6 +4,7 @@ import os
 from config import app_config
 from flask_cloudy import Storage
 from transcribe import *
+from summarize import summarize
 import json
 
 # Using ENV to specify the configuration file
@@ -12,16 +13,10 @@ import json
 
 app = Flask(__name__)
 config_name = os.getenv('ENV')
+# Get configuration from base config file
 app.config.from_object(app_config[config_name])
-
-app.config.update({
-    "STORAGE_PROVIDER": "GOOGLE_STORAGE", # Can also be S3, GOOGLE_STORAGE, etc...
-    "STORAGE_KEY": "",
-    "STORAGE_SECRET": "",
-    "STORAGE_CONTAINER": "./",  # a directory path for local, bucket name of cloud
-    "STORAGE_SERVER": True,
-    "STORAGE_SERVER_URL": "/files" # The url endpoint to access files on LOCAL provider
-})
+# Get mongo db
+mongo = PyMongo(app)
 
 # Setup storage
 storage = Storage()
@@ -39,15 +34,17 @@ def process_audio_file():
         data_json = json.loads(data)
         file_id = data_json.get("file_id")
         if file_id:
-            return json.dumps(request.json)
             # download from gcp
             data = download_from_GCP(file_id)
             # analysing audio file
             sentences = get_sentences(data)
+            full_text = get_text(sentences)
             # cluster and summarize
             # save result in db
-
+            save_sentences_to_mongo(sentences)
             # return result back
+            summarize_sentences = summarize(full_text, 3)
+            return json.dump(sentences)
 
 
 def download_from_GCP(file_name):
@@ -58,3 +55,10 @@ def download_from_GCP(file_name):
         return blob.download_as_string()
     else:
         print("File %s not found" % file_name)
+
+def save_sentences_to_mongo(file_name, input_sentences):
+     sentences = mongo.db.sentences
+     sentences.delete_many({"file_name": file_name})
+     for s in input_sentences:
+        s["file_name"] = file_name
+     sentences.insert_many(input_sentences)
