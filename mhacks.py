@@ -6,7 +6,8 @@ import os
 from config import app_config
 from google.cloud import storage
 from app.transcribe import *
-#from app.summarizer import *
+from app.summarizer import *
+from app.cluster import cluster
 import json
 
 # Using ENV to specify the configuration file
@@ -38,12 +39,18 @@ def process_audio_file():
             print("Converting to text")
             sentences = get_sentences(data)
             full_text = get_text(sentences)
+            clusters = cluster(sentences)
             # cluster and summarize
             # save result in db
-            #save_sentences_to_mongo(sentences)
+            save_sentences_to_mongo(sentences)
             # return result back
-            #summarize_sentences = summarize(full_text, 3)
-            return jsonify(sentences)
+            summarize_sentences = summarize(full_text, 3)
+            response = {
+                "sentences": sentences,
+                "clusters": clusters,
+                "summary": summarize_sentences
+            }
+            return jsonify(response)
 
 
 def download_from_GCP(file_name):
