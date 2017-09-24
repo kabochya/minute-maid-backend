@@ -48,7 +48,7 @@ def process_audio_file():
             response = {
                 "sentences": sentences,
                 "clusters": clusters,
-                "summary": summarize_sentences
+                "summary": [str(s) for s in summarize_sentences]
             }
             return jsonify(response)
 
