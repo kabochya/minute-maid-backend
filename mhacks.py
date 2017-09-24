@@ -1,10 +1,13 @@
+from __future__ import absolute_import
+from __future__ import division, print_function, unicode_literals
+
 from flask import Flask
 from flask import request
 import os
 from config import app_config
 from flask_cloudy import Storage
-from transcribe import *
-from summarize import summarize
+from app.transcribe import *
+from app.summarizer import *
 import json
 
 # Using ENV to specify the configuration file

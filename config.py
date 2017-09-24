@@ -15,7 +15,7 @@ class DevelopmentConfig(Config):
 
 class ProductionConfig(Config):
     """Configuration for production"""
-    DATABASE_URI = 'mysql://user@localhost/foo'
+    DEBUG = False
 
 app_config = {
     'dev': DevelopmentConfig,

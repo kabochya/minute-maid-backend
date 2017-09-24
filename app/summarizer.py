@@ -1,3 +1,4 @@
+
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.luhn import LuhnSummarizer
@@ -34,4 +35,4 @@ def summarize(text, sentence_count, summarizer_type="lsa"):
 if __name__=="__main__":
     with open("data/test3.txt", "r") as f:
         for s in summarize(f.read(), 3):
-            print s
+            print(s)
