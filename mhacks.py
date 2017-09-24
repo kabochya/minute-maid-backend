@@ -50,7 +50,7 @@ def process_audio_file():
                 "clusters": clusters,
                 "summary": [str(s) for s in summarize_sentences]
             }
-            print(response)
+            print(response["sentences"])
             return jsonify(response)
 
 
