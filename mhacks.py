@@ -5,7 +5,7 @@ import os
 from config import app_config
 from google.cloud import storage
 from app.transcribe import *
-from app.summarizer import *
+#from app.summarizer import *
 import json
 
 # Using ENV to specify the configuration file
@@ -46,8 +46,8 @@ def process_audio_file():
 
 
 def download_from_GCP(file_name):
-    client = storage.Client(project=app.config[PROJECT_ID])
-    bucket = client.bucket(app_config[BUCKET_ID])
+    client = storage.Client(project=app.config["PROJECT_ID"])
+    bucket = client.bucket(app_config["BUCKET_ID"])
     blob = bucket.get_blob(file_name)
     if blob:
         return blob.download_as_string()
