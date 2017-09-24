@@ -1,15 +1,20 @@
 from watson_developer_cloud import SpeechToTextV1
 import cPickle as pickle
+import os
 
 stt = SpeechToTextV1(username="56076909-791e-498c-84b9-b56ee1b47932",
                      password="5BKPF3HxSvVq")
 
-def transcribe_file_watson(file_name):
-    with open(file_name,
-          'rb') as audio_file:
-        return stt.recognize(
+def transcribe_audio_watson(string):
+    if os.path.isfile(string):
+        with open(string, "rb") as f:
+            data = f.read()
+    else:
+        data = string
+    return stt.recognize(
             audio_file, content_type='audio/wav',
-            speaker_labels=True)
+            timestamps = True
+            )
 
 def parse_watson_result(result):
     """
@@ -47,6 +52,16 @@ def get_text(sentence_list):
     ret = ". ".join([s["text"].capitalize() for s in sentence_list])
     return ret + "."
 
+def get_sentences(data):
+    """
+        :params data: string, can be bytes or file_name for the audio
+        :rtype ret: list, a list of sentences
+    """
+    audio_text = transcribe_audio_watson(data)
+    if not audio_text:
+        return parse_watson_result(audio_text)
+
+
 def export_watson_result(result, file_name):
     with open(file_name, "wr") as f:
         pickle.dump(result, f)
@@ -57,7 +72,7 @@ def export_transcript(result, file_name):
         f.write(get_text(parsed_result))
 
 if __name__=="__main__":
-    result = transcribe_file_watson("../plan2.wav")
+    result = transcribe_audio_watson("../plan2.wav")
     export_watson_result(result, "data/plan2_result.txt")
     export_transcript(result, "data/test4.txt")
 

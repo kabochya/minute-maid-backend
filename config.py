@@ -3,6 +3,8 @@ import os
 class Config(object):
     """Parent configuration class"""
     DEBUG = False
+    BUCKET_ID = "xxnet-172504.appspot.com"
+    PROJECT_ID = "xxnet-172504"
 
 class DevelopmentConfig(Config):
     """Configuration for development"""
