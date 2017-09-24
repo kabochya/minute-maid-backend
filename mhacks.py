@@ -46,8 +46,8 @@ def process_audio_file():
 
 
 def download_from_GCP(file_name):
-    client = storage.Client(project=app.config["PROJECT_ID"])
-    bucket = client.bucket(app_config["BUCKET_ID"])
+    client = storage.Client(project=app.config[PROJECT_ID])
+    bucket = client.bucket(app_config[BUCKET_ID])
     blob = bucket.get_blob(file_name)
     if blob:
         return blob.download_as_string()
