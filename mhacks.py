@@ -40,7 +40,7 @@ def process_audio_file():
             print("Converting to text")
             sentences = list(mongo_find_sentences(file_id))
             if not sentences:
-                sentences = get_sentences(data, save=True)
+                sentences = get_sentences(data)
                 save_sentences_to_mongo(file_id, sentences)
                 for s in sentences:
                     del s["_id"]
