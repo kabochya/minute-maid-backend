@@ -10,7 +10,7 @@ def cluster(sentences):
 
     my_stop_words = {'okay', 'don', 've', 'didn', 'know', 'think', 'really'}
 
-    corpus = [c.text.replace("%hesitation", "") for c in sentences]
+    corpus = [c['text'].replace("%hesitation", "").lower() for c in sentences]
 
     corpus = np.array(corpus)
     tf_vectorizer = TfidfVectorizer(decode_error='ignore', max_df=0.7,
